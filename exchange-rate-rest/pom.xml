@@ -37,6 +37,16 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>-->
         <dependency>
+            <artifactId>exchange-rate-core</artifactId>
+            <groupId>com.hsbc.exchange-rate-api</groupId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <artifactId>exchange-rate-service</artifactId>
+            <groupId>com.hsbc.exchange-rate-api</groupId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${fasterxml.jackson.version}</version>

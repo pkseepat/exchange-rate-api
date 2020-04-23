@@ -9,13 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>exchange-rate-service</artifactId>
+    <artifactId>exchange-rate-core</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.hsbc.exchange-rate-api</groupId>
-            <artifactId>exchange-rate-core</artifactId>
-            <scope>compile</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
