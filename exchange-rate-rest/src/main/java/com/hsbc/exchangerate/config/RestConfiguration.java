@@ -2,6 +2,7 @@ package com.hsbc.exchangerate.config;
 /**
  * Created by pseepathi on 23/04/2020.
  */
+
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -14,7 +15,6 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 
-import com.hsbc.exchangerate.connection.HeaderInterceptor;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -30,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -38,6 +37,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import com.hsbc.exchangerate.connection.HeaderInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,10 +63,6 @@ public class RestConfiguration {
     @Bean(name = "ratesApiRestTemplate")
     public RestTemplate ratesApiRestTemplate() {
 
-        /*RestTemplate restTemplate = new RestTemplate(httpsClientHttpRequestFactory(getPropertyInteger("rates.service.readTimeout"),
-                getPropertyInteger("rates.service.connectionTimeout"), getPropertyInteger("rates.service.maxPoolSize"),
-                getPropertyInteger("rates.service.maxPerRoute")));*/
-
         RestTemplate restTemplate = new RestTemplate(httpsClientHttpRequestFactory(getPropertyInteger(readTimeOut),
                 getPropertyInteger(connectionTimeout), getPropertyInteger(maxPoolSize),
                 getPropertyInteger(maxPerRoute)));
@@ -76,10 +72,6 @@ public class RestConfiguration {
 
         MappingJackson2HttpMessageConverter jacksonMessageConverter = new MappingJackson2HttpMessageConverter();
         List<MediaType> mediaTypes = new ArrayList<>();
-        /*mediaTypes.add(new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
-        mediaTypes.add(new MediaType("application", "*+json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
-        mediaTypes.add(new MediaType("text", "plain", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
-        mediaTypes.add(new MediaType("text", "javascript", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));*/
         mediaTypes.add(MediaType.APPLICATION_JSON);
         mediaTypes.add(MediaType.TEXT_HTML);
         jacksonMessageConverter.setSupportedMediaTypes(mediaTypes);
@@ -140,13 +132,9 @@ public class RestConfiguration {
 
             return poolingHttpClientConnectionManager;
         } catch (Exception e) {
-           // log.error("Could not set up the http connection pool", e);
+           log.error("Could not set up the http connection pool", e);
         }
         return null;
-    }
-
-    public String getProperty(String envProperty){
-       return env.getProperty(envProperty) ;
     }
 
     public Integer getPropertyInteger(String envProperty){

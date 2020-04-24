@@ -92,7 +92,6 @@ public class ApplicationConfig implements  WebMvcConfigurer {
         ppc.setLocations( resources );
         ppc.setIgnoreUnresolvablePlaceholders( true );
         return ppc;
-       // return new PropertySourcesPlaceholderConfigurer();
     }
 
     private ApiInfo apiInfo() {

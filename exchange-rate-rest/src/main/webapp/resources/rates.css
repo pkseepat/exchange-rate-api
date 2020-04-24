@@ -1,36 +1,27 @@
-.confirm-modal-buttons {
-  float: right;
+.rTable {
+  display: block;
+  width: 100%;
 }
-
-.active-promotions {
-  padding-bottom: 40px;
+.rTableHeading, .rTableBody, .rTableFoot, .rTableRow{
+  clear: both;
 }
-
-.hidden-form {
-  display: inline-block;
+.rTableHead, .rTableFoot{
+  background-color: #DDD;
+  font-weight: bold;
 }
-
-.disable-button {
-  border: .1rem solid #e74c3c !important;
-  outline-color: #e74c3c !important;
-  background-color: #e74c3c !important;
+.rTableCell, .rTableHead {
+  border: 1px solid #999999;
+  float: left;
+  height: 17px;
+  overflow: hidden;
+  padding: 3px 1.8%;
+  width: 28%;
 }
-
-.enable-button {
-  border: .1rem solid #27ae60 !important;
-  outline-color: #27ae60 !important;
-  background-color: #27ae60 !important;
-}
-
-.tile-subtitle {
-  padding-bottom: 10px;
-}
-
-.promotion-wrapper {
-  padding-bottom: 20px;
-}
-
-.all-promotions-wrapper {
-  margin-left: 20px;
-  margin-top: 40px;
+.rTable:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
 }

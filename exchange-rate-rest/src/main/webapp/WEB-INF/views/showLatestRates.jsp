@@ -3,9 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>Promotion UI</title>
-    <link href="${pageContext.request.contextPath}/resources/css/rates.css" rel="stylesheet"/>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
+    <title>Current Exchange Rates</title>
   </head>
   <body>
 
@@ -13,29 +11,23 @@
       <p>${message}</p>
     </c:if>
 
-    <div class="columns all-promotions-wrapper">
-      <h3 class="col-12">Active Promotions</h3>
-      <div class="columns col-12 active-promotions">
+    <table border="1">
+        <tr>
+            <th>Currency</th>
+            <th>Current Rate</th>
+        </tr>
         <c:forEach var="latestRate" items="${latestRates}">
-            <div class="column col-3 promotion-wrapper">
-              <div class="tile tile-centered">
-                <div class="tile-content">
-                  <p class="title-title">${latestRate.currencyCode}</p>
-                  <p class="tile-subtitle">${latestRate.rate}</p>
-                  <div class="title-action">
-                    <button class="btn btn-primary btn-sm promotion-button">View
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <tr>
+                <td>${latestRate.currencyCode}</td>
+                <td>${latestRate.rate}</td>
+            </tr>
         </c:forEach>
-      </div>
-
-
-
-
-
-    </div>
+        <tr>
+            <td>
+            <button class="btn btn-primary">Historical Exchange Rates
+            </button>
+            </td>
+        </tr>
+    </table>
   </body>
 </html>

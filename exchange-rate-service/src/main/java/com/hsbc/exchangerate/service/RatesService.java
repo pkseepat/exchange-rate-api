@@ -16,11 +16,11 @@ public class RatesService {
         rate1.setCurrencyCode("GBP");
         rate1.setRate(new BigDecimal(1.0));
         Rate rate2 = new Rate();
-        rate1.setCurrencyCode("USA");
-        rate1.setRate(new BigDecimal(2.0));
+        rate2.setCurrencyCode("USA");
+        rate2.setRate(new BigDecimal(2.0));
         Rate rate3 = new Rate();
-        rate1.setCurrencyCode("UK");
-        rate1.setRate(new BigDecimal(3.0));
+        rate3.setCurrencyCode("UK");
+        rate3.setRate(new BigDecimal(3.0));
 
         rates.add(rate1);
         rates.add(rate2);
