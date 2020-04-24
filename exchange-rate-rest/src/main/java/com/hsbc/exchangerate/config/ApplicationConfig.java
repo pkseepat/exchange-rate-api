@@ -10,21 +10,26 @@ import java.time.format.DateTimeFormatter;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -51,7 +56,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 @EnableScheduling
 @EnableCaching
-public class ApplicationConfig implements WebMvcConfigurer {
+/*@EnableConfigurationProperties*/
+public class ApplicationConfig implements  WebMvcConfigurer {
 
     @Bean
     public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
@@ -79,7 +85,14 @@ public class ApplicationConfig implements WebMvcConfigurer {
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+        PropertySourcesPlaceholderConfigurer ppc
+                = new PropertySourcesPlaceholderConfigurer();
+        Resource[] resources = new ClassPathResource[]
+                { new ClassPathResource( "application.properties" ) };
+        ppc.setLocations( resources );
+        ppc.setIgnoreUnresolvablePlaceholders( true );
+        return ppc;
+       // return new PropertySourcesPlaceholderConfigurer();
     }
 
     private ApiInfo apiInfo() {

@@ -27,6 +27,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -42,28 +43,45 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
-@PropertySource("classpath:application.properties")
 public class RestConfiguration {
 
     @Autowired
     private Environment env;
 
+    @Value("${rates.service.readTimeout}")
+    private String readTimeOut;
+
+    @Value("${rates.service.maxPoolSize}")
+    private String maxPoolSize;
+
+    @Value("${rates.service.maxPerRoute}")
+    private String maxPerRoute;
+
+    @Value("${rates.service.connectionTimeout}")
+    private String connectionTimeout;
+
     @Bean(name = "ratesApiRestTemplate")
     public RestTemplate ratesApiRestTemplate() {
 
-        RestTemplate restTemplate = new RestTemplate(httpsClientHttpRequestFactory(getPropertyInteger("rates.service.readTimeout"),
+        /*RestTemplate restTemplate = new RestTemplate(httpsClientHttpRequestFactory(getPropertyInteger("rates.service.readTimeout"),
                 getPropertyInteger("rates.service.connectionTimeout"), getPropertyInteger("rates.service.maxPoolSize"),
-                getPropertyInteger("rates.service.maxPerRoute")));
+                getPropertyInteger("rates.service.maxPerRoute")));*/
+
+        RestTemplate restTemplate = new RestTemplate(httpsClientHttpRequestFactory(getPropertyInteger(readTimeOut),
+                getPropertyInteger(connectionTimeout), getPropertyInteger(maxPoolSize),
+                getPropertyInteger(maxPerRoute)));
 
         ClientHttpRequestInterceptor acceptHeader = new HeaderInterceptor();
         restTemplate.setInterceptors(Arrays.asList(acceptHeader));
 
         MappingJackson2HttpMessageConverter jacksonMessageConverter = new MappingJackson2HttpMessageConverter();
         List<MediaType> mediaTypes = new ArrayList<>();
-        mediaTypes.add(new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
+        /*mediaTypes.add(new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
         mediaTypes.add(new MediaType("application", "*+json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
         mediaTypes.add(new MediaType("text", "plain", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
-        mediaTypes.add(new MediaType("text", "javascript", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
+        mediaTypes.add(new MediaType("text", "javascript", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));*/
+        mediaTypes.add(MediaType.APPLICATION_JSON);
+        mediaTypes.add(MediaType.TEXT_HTML);
         jacksonMessageConverter.setSupportedMediaTypes(mediaTypes);
         restTemplate.getMessageConverters().add(jacksonMessageConverter);
 
@@ -122,7 +140,7 @@ public class RestConfiguration {
 
             return poolingHttpClientConnectionManager;
         } catch (Exception e) {
-            log.error("Could not set up the http connection pool", e);
+           // log.error("Could not set up the http connection pool", e);
         }
         return null;
     }
@@ -132,7 +150,7 @@ public class RestConfiguration {
     }
 
     public Integer getPropertyInteger(String envProperty){
-        return env.getProperty(envProperty, Integer.class) ;
+        return Integer.parseInt(envProperty) ;
     }
 
 }
