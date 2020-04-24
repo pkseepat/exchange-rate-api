@@ -1,15 +1,16 @@
 package com.hsbc.exchangerate.client.repository;
 
-import com.hsbc.exchangerate.persistence.entity.ExchangeRatesEntity;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.hsbc.exchangerate.persistence.entity.ExchangeRatesEntity;
+
 
 public interface ExchangeRatesRepository extends CrudRepository<ExchangeRatesEntity, Long> {
+
     @Query(value="SELECT r FROM ExchangeRatesEntity r WHERE r.currencyCode= ?1 and r.exchangeRateDate= ?2")
     ExchangeRatesEntity findByCurrencyCodeAndExchangeRateDate(String currencyCode, Date exchangeRateDate);
 
@@ -19,7 +20,6 @@ public interface ExchangeRatesRepository extends CrudRepository<ExchangeRatesEnt
     ExchangeRatesEntity findByBaseAndCurrencyCode(String base, String currencyCode);
 
     List<ExchangeRatesEntity> findALLByExchangeRateDateBetweenAndCurrencyCode(Date fromExchangeRateDate, Date toExchangeRateDate, String currencyCode);
-
 
     List<ExchangeRatesEntity> findALLByCurrencyCode(String currencyCode);
 }

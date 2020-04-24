@@ -1,17 +1,19 @@
 package com.hsbc.exchangerate.client.service;
 
-import com.hsbc.exchangerate.client.repository.ExchangeRatesRepository;
-import com.hsbc.exchangerate.core.model.*;
-import com.hsbc.exchangerate.core.model.exception.RestException;
-import com.hsbc.exchangerate.persistence.entity.ExchangeRatesEntity;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.hsbc.exchangerate.client.repository.ExchangeRatesRepository;
+import com.hsbc.exchangerate.core.model.CurrencyRate;
+import com.hsbc.exchangerate.core.model.LatestRatesResponse;
+import com.hsbc.exchangerate.core.model.Rate;
+import com.hsbc.exchangerate.core.model.exception.RestException;
+import com.hsbc.exchangerate.persistence.entity.ExchangeRatesEntity;
 
 @Service
 public class RatesService {
@@ -22,6 +24,11 @@ public class RatesService {
     @Autowired
     private ExchangeRatesRepository exchangeRatesRepository;
 
+    /**
+     * Method to get latest rates from rates API
+     * @return
+     * @throws RestException
+     */
     public Map<String, BigDecimal> getLatestRates() throws RestException {
     LatestRatesResponse latestRates = unitedRewardsService.getLatestRates();
       Map<String, BigDecimal> result = latestRates.getRates().entrySet()
@@ -33,6 +40,12 @@ public class RatesService {
         return result;
     }
 
+    /**
+     * Method to get past 6 days historical rates
+     * @return
+     * @throws RestException
+     * @throws ParseException
+     */
     public Map<String, List<BigDecimal>> getHistoricalRates() throws RestException, ParseException {
         List<BigDecimal> gbpRateList = mapHistoricalData("GBP");
         List<BigDecimal> usdRateList = mapHistoricalData("USD");
@@ -44,11 +57,10 @@ public class RatesService {
         return historicalList;
 
     }
-
+    /*Method  to get historic data for three curriencies*/
     private List<BigDecimal> mapHistoricalData(String currencyCode) throws ParseException {
         Date historicalFromDate = getHistoricalDate(0);
         Date historicalToDate = getHistoricalDate(6);
-        List<ExchangeRatesEntity> gbpHistoricalData1 = exchangeRatesRepository.findALLByExchangeRateDateBetweenAndCurrencyCode(new SimpleDateFormat("yyyy-MM-dd").parse("2020-04-01"), new SimpleDateFormat("yyyy-MM-dd").parse("2019-10-01"), currencyCode);
         List<ExchangeRatesEntity> gbpHistoricalData = exchangeRatesRepository.findALLByCurrencyCode(currencyCode);
         CurrencyRate currencyRate10 = new CurrencyRate();
         currencyRate10.setCurrencyCode(currencyCode);
@@ -60,17 +72,11 @@ public class RatesService {
         });
         return gbpRateList;
     }
-
+     /*Get Date for a given month*/
     private Date getHistoricalDate(int month) {
         Calendar cal = Calendar.getInstance();  //Get current date/month
         cal.add(Calendar.MONTH, -month);   //Go to date, 6 months ago
         cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date date = cal.getTime();
-      //  String strDate = null;
-        /*if (date != null) {
-            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-            strDate = ft.format(date);
-        }*/
         return cal.getTime();
     }
 }

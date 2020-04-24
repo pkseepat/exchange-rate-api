@@ -23,6 +23,11 @@ public class RatesApiService implements RatesInterface {
     @Qualifier("ratesApiRestTemplate")
     private RestTemplate ratesApiRestTemplate;
 
+    /**
+     * Method to call Rest Api and return results
+     * @return
+     * @throws RestException
+     */
     public LatestRatesResponse getLatestRates() throws RestException {
         try {
             URI url = urlBuilder.forGetLatestRates();
@@ -36,6 +41,14 @@ public class RatesApiService implements RatesInterface {
         }
     }
 
+    /**
+     * Method to call Rest API to get historic data
+     * @param historicDate
+     * @param baseCurrency
+     * @param symbols
+     * @return
+     * @throws RestException
+     */
     public HistoricRatesResponse getHistoricalRates(String historicDate,String baseCurrency,String symbols) throws RestException {
         try {
             URI url = urlBuilder.forGetHistoricalRates(historicDate, baseCurrency, symbols);

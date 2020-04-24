@@ -21,7 +21,10 @@ public class HistoricRatesScheduler {
     @Autowired
     private HistoricRatesProcessor historicRatesProcessor;
 
-    @Scheduled(fixedDelayString  = "600000")
+    /**
+     * Method to run a schduled job daily to updates rates in database
+     */
+    @Scheduled(fixedDelayString  = "86400000")
     @Transactional
     public void runScheduledHistoricRates() {
         try {

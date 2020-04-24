@@ -12,6 +12,14 @@ import org.springframework.http.client.support.HttpRequestWrapper;
 
 public class HeaderInterceptor implements ClientHttpRequestInterceptor {
 
+    /**
+     * Method to intercept outgoing requests
+     * @param request
+     * @param body
+     * @param execution
+     * @return
+     * @throws IOException
+     */
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         HttpRequestWrapper requestWrapper = new HttpRequestWrapper(request);

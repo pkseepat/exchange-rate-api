@@ -27,6 +27,11 @@ public class HistoricRatesProcessor {
     @Autowired
     private ExchangeRatesRepository exchangeRatesRepository;
 
+    /**
+     * This method get historic data from rest api and updates or insert database
+     * @throws RestException
+     * @throws ParseException
+     */
     public void processHistoricRates() throws RestException, ParseException {
 
         for (int i = 0; i < 6; i++) {
@@ -35,7 +40,6 @@ public class HistoricRatesProcessor {
             Map<String, BigDecimal> rates = historicalRates.getRates();
             for (Map.Entry<String, BigDecimal> entry : rates.entrySet()) {
                 ExchangeRatesEntity exchangeRatesEntity = exchangeRatesRepository.findByCurrencyCodeAndExchangeRateDate(entry.getKey(), new SimpleDateFormat("yyyy-MM-dd").parse(historicalRates.getDate()));
-             //   ExchangeRatesEntity exchangeRatesEntity1 = exchangeRatesRepository.findByBaseAndCurrencyCode(historicalRates.getBase(),entry.getKey());
                 if (exchangeRatesEntity != null) {
                     exchangeRatesEntity.setRate(entry.getValue());
                 } else {
@@ -51,7 +55,7 @@ public class HistoricRatesProcessor {
         System.out.println("Total Size " + Iterables.size(ratesEntities));
 
     }
-
+    /*Get a date in String format*/
     private String getHistoricalDate(int month) {
         Calendar cal = Calendar.getInstance();  //Get current date/month
         cal.add(Calendar.MONTH, -month);   //Go to date, 6 months ago

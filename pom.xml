@@ -165,17 +165,6 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-
-       <!-- <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.el</artifactId>
-        </dependency>-->
-
     </dependencies>
 
     <dependencyManagement>
@@ -251,6 +240,15 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-test</artifactId>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -268,6 +266,7 @@
                     </requiresUnpack>
                     <fork>false</fork>
                 </configuration>
+                <version>2.2.6.RELEASE</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

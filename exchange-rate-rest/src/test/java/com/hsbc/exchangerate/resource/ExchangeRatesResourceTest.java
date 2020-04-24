@@ -2,9 +2,11 @@ package com.hsbc.exchangerate.resource;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -30,7 +32,7 @@ import com.hsbc.exchangerate.resource.data.DummyExchangeRatesBuilder;
 @AutoConfigureMockMvc
 @TestPropertySource("/application.properties")
 public class ExchangeRatesResourceTest {
-    public static final String API_PROMOTIONS_BATCH = "/api/rates";
+    public static final String API_RATES = "/api/rates";
     public static final String ERROR_CODE = "ERROR_CODE";
     public static final String ERROR_MESSAGE = "ERROR_MESSAGE";
 
@@ -59,7 +61,7 @@ public class ExchangeRatesResourceTest {
         given(ratesService.getLatestRates()).willReturn(expected);
 
         // THEN
-        this.mockMvc.perform(get(API_PROMOTIONS_BATCH + "/latest")
+        this.mockMvc.perform(get(API_RATES + "/latest")
         ).andExpect(status().isOk())
                 .andExpect(model().attributeExists("latestRates"));
     }
@@ -71,9 +73,36 @@ public class ExchangeRatesResourceTest {
         given(ratesService.getLatestRates()).willThrow(restException);
 
         // THEN
-        this.mockMvc.perform(get(API_PROMOTIONS_BATCH + "/latest")
+        this.mockMvc.perform(get(API_RATES + "/latest")
         ).andExpect(status().isOk())
                 .andExpect(model().attributeDoesNotExist("latestRates"))
                         .andExpect(view().name("showLatestRates"));
+    }
+
+    @Test
+    public void getHistoricRates_should_callServiceAndReturnResult() throws Exception {
+
+        // GIVEN
+        Map<String, List<BigDecimal>> expected = DummyExchangeRatesBuilder.createDummyHistoricExchangeRatesList();
+
+        given(ratesService.getHistoricalRates()).willReturn(expected);
+
+        // THEN
+        this.mockMvc.perform(post(API_RATES).param("days" , "6")
+        ).andExpect(status().isOk())
+                .andExpect(model().attributeExists("historicalRates"));
+    }
+
+    @Test
+    public void getHistoricRates_should_returnErrorMessage_when_RatesApiReturnsException() throws Exception {
+        // GIVEN
+        RestException restException = new RestException(ERROR_CODE, ERROR_MESSAGE);
+        given(ratesService.getHistoricalRates()).willThrow(restException);
+
+        // THEN
+        this.mockMvc.perform(post(API_RATES).param("days" , "6")
+        ).andExpect(status().isOk())
+                .andExpect(model().attributeDoesNotExist("historicalRates"))
+                .andExpect(view().name("showHistoricalRates"));
     }
 }

@@ -45,7 +45,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableAutoConfiguration(exclude={MultipartAutoConfiguration.class})
-@Import(value = {DatabaseConfig.class})
+@Import(value = {DatabaseConfig.class, WebSecurityConfig.class})
 @ComponentScan("com.hsbc.exchangerate.*")
 @EntityScan(value="com.hsbc.exchangerate")
 @EnableJpaRepositories("com.hsbc.exchangerate")
@@ -96,7 +96,8 @@ public class ApplicationConfig implements  WebMvcConfigurer {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Exchange Rates service for HSBC")
-                .description("Exchange Rates service API Description")
+                .description("Exchange Rates Microservice is a SpringBoot RESTful service. This service is to view\n" +
+                        "current GBP, USD, HKD exchange rates against Euro")
                 .contact(new Contact("ExchangeRates", "http:/exchange-rates-url.com", "test@test.com"))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")

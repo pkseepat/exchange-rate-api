@@ -19,11 +19,24 @@ public class RatesApiUrlBuilder {
     @Value(value = "${rates.api.baseurl:https://api.ratesapi.io/api/}")
     private String serviceUrl;
 
+    /**
+     * Methodto get Latest rates API URI
+     * @return
+     * @throws URISyntaxException
+     */
     public URI forGetLatestRates() throws URISyntaxException {
         URIBuilder builder = initializeBuilder(GET_LATEST_URL);
         return builder.build();
     }
 
+    /**
+     * Method to get historic rates URI
+     * @param historicDate
+     * @param baseCurrency
+     * @param symbols
+     * @return
+     * @throws URISyntaxException
+     */
     public URI forGetHistoricalRates(String historicDate,String baseCurrency,String symbols) throws URISyntaxException {
         URIBuilder builder = initializeBuilder(historicDate, baseCurrency, symbols);
         return builder.build();
