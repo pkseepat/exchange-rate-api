@@ -1,31 +1,34 @@
 package com.hsbc.exchangerate.resource;
 
-import com.hsbc.exchangerate.core.model.Rate;
-import com.hsbc.exchangerate.core.model.RatesApiResponse;
-import com.hsbc.exchangerate.core.model.exception.RestException;
-import com.hsbc.exchangerate.resource.data.DummyExchangeRatesBuilder;
-import com.hsbc.exchangerate.service.RatesService;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.math.BigDecimal;
+import java.util.Map;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.hsbc.exchangerate.client.service.RatesService;
+import com.hsbc.exchangerate.core.model.exception.RestException;
+import com.hsbc.exchangerate.resource.data.DummyExchangeRatesBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource("/application.properties")
 public class ExchangeRatesResourceTest {
     public static final String API_PROMOTIONS_BATCH = "/api/rates";
     public static final String ERROR_CODE = "ERROR_CODE";
@@ -40,23 +43,25 @@ public class ExchangeRatesResourceTest {
     @Mock
     private RatesService ratesService;
 
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(exchangeRatesResource).build();
+    }
+
+
     @Test
     public void getLatestRates_should_callServiceAndReturnResult() throws Exception {
 
         // GIVEN
-        List<Rate> expected = DummyExchangeRatesBuilder.createDummyExchangeRatesList();
+        Map<String, BigDecimal> expected = DummyExchangeRatesBuilder.createDummyExchangeRatesList();
 
         given(ratesService.getLatestRates()).willReturn(expected);
-        // WHEN
-      //  String latestRates = exchangeRatesResource.getLatestRates();
 
         // THEN
         this.mockMvc.perform(get(API_PROMOTIONS_BATCH + "/latest")
         ).andExpect(status().isOk())
                 .andExpect(model().attributeExists("latestRates"));
-        /*assertNull(latestRates.getStatus().getErrorCode());
-        assertNull(latestRates.getStatus().getErrorMessage());
-        assertEquals(expected, latestRates.getData());*/
     }
 
     @Test
@@ -65,12 +70,10 @@ public class ExchangeRatesResourceTest {
         RestException restException = new RestException(ERROR_CODE, ERROR_MESSAGE);
         given(ratesService.getLatestRates()).willThrow(restException);
 
-        // WHEN
-       // RatesApiResponse<List<Rate>> latestRates = exchangeRatesResource.getLatestRates();
-
         // THEN
-      /*  assertFalse(latestRates.getStatus().isSuccess());
-        assertEquals(ERROR_CODE, latestRates.getStatus().getErrorCode());
-        assertEquals(ERROR_MESSAGE, latestRates.getStatus().getErrorMessage());*/
+        this.mockMvc.perform(get(API_PROMOTIONS_BATCH + "/latest")
+        ).andExpect(status().isOk())
+                .andExpect(model().attributeDoesNotExist("latestRates"))
+                        .andExpect(view().name("showLatestRates"));
     }
 }

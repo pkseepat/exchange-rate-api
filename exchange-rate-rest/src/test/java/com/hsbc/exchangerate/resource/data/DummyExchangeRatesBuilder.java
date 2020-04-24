@@ -1,28 +1,15 @@
 package com.hsbc.exchangerate.resource.data;
 
-import com.hsbc.exchangerate.core.model.Rate;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DummyExchangeRatesBuilder {
-    public static List<Rate> createDummyExchangeRatesList() {
-        List<Rate> rates = new ArrayList<Rate>();
-        Rate rate1 = new Rate();
-        rate1.setCurrencyCode("GBP");
-        rate1.setRate(new BigDecimal(1.0));
-        Rate rate2 = new Rate();
-        rate1.setCurrencyCode("USA");
-        rate1.setRate(new BigDecimal(2.0));
-        Rate rate3 = new Rate();
-        rate1.setCurrencyCode("UK");
-        rate1.setRate(new BigDecimal(3.0));
-
-        rates.add(rate1);
-        rates.add(rate2);
-        rates.add(rate3);
-
+    public static Map<String, BigDecimal> createDummyExchangeRatesList() {
+        Map<String, BigDecimal> rates = new HashMap<String, BigDecimal>();
+        rates.put("GBP",new BigDecimal(1.0));
+        rates.put("USA",new BigDecimal(2.0));
+        rates.put("UK",new BigDecimal(3.0));
         return rates;
     }
 }

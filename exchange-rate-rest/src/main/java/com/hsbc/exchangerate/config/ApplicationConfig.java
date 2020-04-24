@@ -55,7 +55,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableAsync
 @EnableScheduling
-@EnableCaching
+/*@EnableCaching*/
 /*@EnableConfigurationProperties*/
 public class ApplicationConfig implements  WebMvcConfigurer {
 

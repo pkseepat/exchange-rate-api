@@ -9,20 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>exchange-rate-service</artifactId>
+    <artifactId>exchange-rate-client-rates</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.hsbc.exchange-rate-api</groupId>
             <artifactId>exchange-rate-core</artifactId>
-            <scope>compile</scope>
+            <groupId>com.hsbc.exchange-rate-api</groupId>
         </dependency>
         <dependency>
-            <groupId>com.hsbc.exchange-rate-api</groupId>
-            <artifactId>exchange-rate-client-rates</artifactId>
-            <version>DEV-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
     </dependencies>
 
 </project>
