@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Current Exchange Rates</title>
+    <title>Historical Exchange Rates</title>
 </head>
 <body>
     <c:if test="${message != null}">
@@ -22,9 +22,9 @@
         </tr>
         <c:forEach var="historicalRate" items="${historicalRates}">
             <tr>
-                <td>${historicalRate.currencyCode}</td>
-                <c:forEach var="rate" items="${historicalRate.rates}">
-                    <td>${rate.rate}</td>
+                <td>${historicalRate.key}</td>
+                <c:forEach var="rate" items="${historicalRate.value}">
+                    <td>${rate}</td>
                 </c:forEach>
             </tr>
         </c:forEach>

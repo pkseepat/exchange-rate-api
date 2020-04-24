@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,9 +52,9 @@ public class ExchangeRatesResource {
     public String getHistoricalRates(Model model, @RequestParam String days, RedirectAttributes redirectAttrs, HttpServletRequest request) {
         log.info("POST request for historical rates {}");
         try {
-            List<CurrencyRate> historicalRates = ratesService.getHistoricalRates();
+            Map<String, List<BigDecimal>> historicalRates = ratesService.getHistoricalRates();
             model.addAttribute("historicalRates", historicalRates);
-        } catch (RestException e) {
+        } catch (RestException | ParseException e) {
             model.addAttribute(ERROR_MESSAGE,
                     "Error getting latest exchange rates, please try again");
         }

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>exchange-rate-client-rates</artifactId>
+    <artifactId>exchange-rate-persistence</artifactId>
 
     <dependencies>
         <dependency>
@@ -17,17 +17,14 @@
             <groupId>com.hsbc.exchange-rate-api</groupId>
         </dependency>
         <dependency>
-            <artifactId>exchange-rate-persistence</artifactId>
-            <groupId>com.hsbc.exchange-rate-api</groupId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
     </dependencies>

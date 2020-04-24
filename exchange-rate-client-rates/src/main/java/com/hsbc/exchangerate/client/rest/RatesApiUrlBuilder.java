@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class RatesApiUrlBuilder {
     public static final String GET_LATEST_URL = "/latest";
+    public static final String GET_HISTORICAL_URL = "/*";
 
 
     @Value(value = "${rates.api.baseurl:https://api.ratesapi.io/api/}")
@@ -23,10 +24,23 @@ public class RatesApiUrlBuilder {
         return builder.build();
     }
 
+    public URI forGetHistoricalRates(String historicDate,String baseCurrency,String symbols) throws URISyntaxException {
+        URIBuilder builder = initializeBuilder(historicDate, baseCurrency, symbols);
+        return builder.build();
+    }
+
+
     private URIBuilder initializeBuilder(String url) throws URISyntaxException {
         String baseUrl = String.format(serviceUrl);
         URIBuilder builder = new URIBuilder(baseUrl + url);
-        builder.addParameter("JSO-N_CT", "application/JSON");
+        return builder;
+    }
+
+    private URIBuilder initializeBuilder(String historicDate,String baseCurrency,String symbols) throws URISyntaxException {
+        String baseUrl = String.format(serviceUrl);
+        URIBuilder builder = new URIBuilder(baseUrl + "/" + historicDate);
+        builder.addParameter("base", baseCurrency);
+        builder.addParameter("symbols", symbols);
         return builder;
     }
 }

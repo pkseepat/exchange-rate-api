@@ -1,6 +1,7 @@
 package com.hsbc.exchangerate.client.service;
 
 import com.hsbc.exchangerate.client.rest.RatesApiUrlBuilder;
+import com.hsbc.exchangerate.core.model.HistoricRatesResponse;
 import com.hsbc.exchangerate.core.model.LatestRatesResponse;
 import com.hsbc.exchangerate.core.model.exception.RestException;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,19 @@ public class RatesApiService implements RatesInterface {
             log.info(URL_LOG_MSG, url);
 
             return ratesApiRestTemplate.getForObject(url, LatestRatesResponse.class);
+
+        } catch (Exception e) {
+            throw new RestException(e);
+        }
+    }
+
+    public HistoricRatesResponse getHistoricalRates(String historicDate,String baseCurrency,String symbols) throws RestException {
+        try {
+            URI url = urlBuilder.forGetHistoricalRates(historicDate, baseCurrency, symbols);
+
+            log.info(URL_LOG_MSG, url);
+
+            return ratesApiRestTemplate.getForObject(url, HistoricRatesResponse.class);
 
         } catch (Exception e) {
             throw new RestException(e);

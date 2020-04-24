@@ -7,17 +7,13 @@
     <version>DEV-SNAPSHOT</version>
     <modules>
         <module>exchange-rate-rest</module>
+        <module>exchange-rate-client-rates</module>
         <module>exchange-rate-service</module>
         <module>exchange-rate-core</module>
+        <module>exchange-rate-persistence</module>
     </modules>
     <name>Java Coding Task Exchange Rate</name>
     <packaging>pom</packaging>
-
-   <!-- <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.9.RELEASE</version>
-    </parent>-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -198,7 +194,17 @@
                 <version>DEV-SNAPSHOT</version>
             </dependency>
             <dependency>
+                <artifactId>exchange-rate-client-rates</artifactId>
+                <groupId>com.hsbc.exchange-rate-api</groupId>
+                <version>DEV-SNAPSHOT</version>
+            </dependency>
+            <dependency>
                 <artifactId>exchange-rate-service</artifactId>
+                <groupId>com.hsbc.exchange-rate-api</groupId>
+                <version>DEV-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <artifactId>exchange-rate-persistence</artifactId>
                 <groupId>com.hsbc.exchange-rate-api</groupId>
                 <version>DEV-SNAPSHOT</version>
             </dependency>

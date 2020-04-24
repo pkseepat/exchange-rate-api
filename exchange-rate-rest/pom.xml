@@ -94,11 +94,10 @@
             <artifactId>modelmapper</artifactId>
         </dependency>
 
-        <!-- Test -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
 
 
@@ -155,6 +154,11 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>5.2.2.RELEASE</version>
         </dependency>
 
     </dependencies>
@@ -233,6 +237,17 @@
                     </archive>
                     <packagingExcludes>WEB-INF/classes/application.properties,WEB-INF/classes/log4j2.xml</packagingExcludes>
                    <!-- <packagingExcludes>WEB-INF/classes/log4j2.xml</packagingExcludes>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>4.2.0</version>
+                <configuration>
+                    <url>jdbc:h2:mem:exchange_rate</url>
+                    <user>sa</user>
+                    <password>password</password>
                 </configuration>
             </plugin>
 
