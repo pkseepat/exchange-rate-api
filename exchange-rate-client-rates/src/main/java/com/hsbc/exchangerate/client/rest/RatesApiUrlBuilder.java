@@ -13,8 +13,6 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class RatesApiUrlBuilder {
     public static final String GET_LATEST_URL = "/latest";
-    public static final String GET_HISTORICAL_URL = "/*";
-
 
     @Value(value = "${rates.api.baseurl:https://api.ratesapi.io/api/}")
     private String serviceUrl;
